@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../utils/app-error';
 import { env } from '../config/env';
 
+// Express uses argument arity (4 arguments) to detect an error-handling middleware.
+// Keep `_next` in the signature even if unused.
 export function errorHandler(
   err: Error,
   _req: Request,

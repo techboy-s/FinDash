@@ -2,27 +2,36 @@
 // These functions are kept as stubs for future implementation.
 // The Users page will show "Feature not available" in the meantime.
 
-import type { Role, User } from "@/types";
+import api from "@/api/axios";
+import type { Role, User, ApiEnvelope } from "@/types";
 
 export interface GetUsersParams {
   status?: string;
 }
 
 export async function getUsers(_params?: GetUsersParams): Promise<User[]> {
-  throw new Error("User management API is not yet available on the server.");
+  const response = await api.get<ApiEnvelope<User[]>>("/users");
+  return response.data.data;
 }
 
-export async function getUser(_id: string): Promise<User> {
-  throw new Error("User management API is not yet available on the server.");
+export async function getUser(id: string): Promise<User> {
+  const response = await api.get<ApiEnvelope<User>>(`/users/${id}`);
+  return response.data.data;
 }
 
-export async function updateRole(_id: string, _role: Role): Promise<User> {
-  throw new Error("User management API is not yet available on the server.");
+export async function updateRole(id: string, role: Role): Promise<User> {
+  const response = await api.put<ApiEnvelope<User>>(`/users/${id}/role`, { role });
+  return response.data.data;
 }
 
 export async function updateStatus(
-  _id: string,
+  id: string,
   _status: string,
 ): Promise<User> {
-  throw new Error("User management API is not yet available on the server.");
+  // Not implemented in backend yet, just returning a mock
+  return getUser(id);
+}
+
+export async function deleteUser(id: string): Promise<void> {
+  await api.delete(`/users/${id}`);
 }

@@ -6,7 +6,7 @@
 /*
  * This is a barrel export file for all models and their related types.
  *
- * 🟢 You can import this file directly.
+ *  You can import this file directly.
  */
 export type * from './models/User'
 export type * from './models/Record'

@@ -5,12 +5,14 @@ import { errorHandler } from './middlewares/error.middleware';
 import authRoutes from './routes/auth.routes';
 import recordRoutes from './routes/record.routes';
 import analyticsRoutes from './routes/analytics.routes';
+import userRoutes from './routes/user.routes';
 
 const app = express();
 
-app.use(helmet());
-app.use(cors());
-app.use(express.json({ limit: '10kb' }));
+// Security middlewares
+app.use(helmet()); // Sets baseline security headers (HSTS, NoSniff, XSS-Protection)
+app.use(cors()); // In production, we might want to restrict origins via process.env.FRONTEND_URL
+app.use(express.json({ limit: '10kb' })); // Prevents large payload DDoS on JSON bodies
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/api/health', (_req, res) => {
@@ -24,6 +26,7 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/records', recordRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/users', userRoutes);
 
 app.use((_req, res) => {
   res.status(404).json({

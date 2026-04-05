@@ -62,12 +62,12 @@ function randomDate(startDaysAgo: number, endDaysAgo: number): Date {
 }
 
 async function main() {
-  console.log('🌱 Starting database seed...\n');
+  console.log(' Starting database seed...\n');
 
   // Clean existing data
   await prisma.record.deleteMany();
   await prisma.user.deleteMany();
-  console.log('🧹 Cleared existing data');
+  console.log(' Cleared existing data');
 
   // Hash password (same for all seed users for convenience)
   const salt = await bcrypt.genSalt(12);
@@ -82,7 +82,7 @@ async function main() {
       role: Role.ADMIN,
     },
   });
-  console.log(`👤 Created ADMIN: ${admin.email}`);
+  console.log(` Created ADMIN: ${admin.email}`);
 
   const analyst = await prisma.user.create({
     data: {
@@ -92,7 +92,7 @@ async function main() {
       role: Role.ANALYST,
     },
   });
-  console.log(`👤 Created ANALYST: ${analyst.email}`);
+  console.log(` Created ANALYST: ${analyst.email}`);
 
   const viewer = await prisma.user.create({
     data: {
@@ -102,7 +102,7 @@ async function main() {
       role: Role.VIEWER,
     },
   });
-  console.log(`👤 Created VIEWER: ${viewer.email}`);
+  console.log(` Created VIEWER: ${viewer.email}`);
 
   // Create 50 random financial records
   const users = [admin, analyst, viewer];
@@ -129,7 +129,7 @@ async function main() {
   }
 
   await prisma.record.createMany({ data: records });
-  console.log(`\n💰 Created ${records.length} financial records`);
+  console.log(`\n Created ${records.length} financial records`);
 
   // Summary
   const incomeRecords = records.filter((r) => r.type === RecordType.INCOME);
@@ -137,24 +137,24 @@ async function main() {
   const totalIncome = incomeRecords.reduce((sum, r) => sum + r.amount, 0);
   const totalExpenses = expenseRecords.reduce((sum, r) => sum + r.amount, 0);
 
-  console.log('\n📊 Seed Summary:');
+  console.log('\n Seed Summary:');
   console.log(`   Users: 3 (Admin, Analyst, Viewer)`);
   console.log(`   Records: ${records.length}`);
   console.log(`   Income records: ${incomeRecords.length} (Total: $${(totalIncome / 100).toFixed(2)})`);
   console.log(`   Expense records: ${expenseRecords.length} (Total: $${(totalExpenses / 100).toFixed(2)})`);
   console.log(`   Net Balance: $${((totalIncome - totalExpenses) / 100).toFixed(2)}`);
 
-  console.log('\n🔑 Login Credentials (all passwords: Password123!):');
+  console.log('\n Login Credentials (all passwords: Password123!):');
   console.log(`   Admin:   admin@financedash.com`);
   console.log(`   Analyst: analyst@financedash.com`);
   console.log(`   Viewer:  viewer@financedash.com`);
 
-  console.log('\n✅ Seed completed successfully!');
+  console.log('\n Seed completed successfully!');
 }
 
 main()
   .catch((error) => {
-    console.error('❌ Seed failed:', error);
+    console.error(' Seed failed:', error);
     process.exit(1);
   })
   .finally(async () => {

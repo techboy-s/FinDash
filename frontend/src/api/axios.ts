@@ -22,6 +22,7 @@ api.interceptors.response.use(
   (response) => response,
   (error: unknown) => {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
+      // Hard purge of local state on 401s globally to prevent infinite redirect loops on stale sessions
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       window.location.href = "/login";
