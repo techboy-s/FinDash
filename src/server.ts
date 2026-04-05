@@ -20,8 +20,7 @@ async function main() {
   }
 }
 
-// Handle graceful shutdowns for PaaS deployments (Render, Railway, Heroku).
-// Ensures active database pool connections are flushed before container death.
+
 process.on('SIGINT', async () => {
   console.log('\n Shutting down gracefully...');
   await prisma.$disconnect();
